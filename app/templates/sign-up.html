@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sign-up</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.1.1/dist/css/tabler.min.css" />
+
+    <!--customize Google font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+    <style>
+        :root {
+            --tblr-font-sans-serif: "Inter";
+        }
+    </style>
+</head>
+<body>
+    <div class="page page-center">
+        <div class="container container-tight py-4">
+          <form class="card card-md" action="./" method="get" autocomplete="off" novalidate="">
+            <div class="card-body">
+              <div class="mb-3">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-control" placeholder="Enter name">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Email address</label>
+                <input type="email" class="form-control" placeholder="Enter email">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Password</label>
+                <div class="input-group input-group-flat">
+                  <input type="password" class="form-control" placeholder="Password" autocomplete="off">
+                  <span class="input-group-text">
+                    <a href="#" class="link-secondary" data-bs-toggle="tooltip" aria-label="Show password" data-bs-original-title="Show password">
+                      <!-- Download SVG icon from http://tabler.io/icons/icon/eye -->
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                        <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                        <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"></path>
+                      </svg>
+                    </a>
+                  </span>
+                </div>
+              </div>
+              <div class="form-footer">
+                <button type="submit" class="btn btn-primary w-100">Create new account</button>
+              </div>
+            </div>
+          </form>
+          <div class="text-center text-secondary mt-3">Already have account? <a href="./sign-in.html" tabindex="-1">Sign in</a></div>
+        </div>
+      </div>
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.1.1/dist/js/tabler.min.js"></script>
+</body>
+</html>
