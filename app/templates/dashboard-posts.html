@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sign-up</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.1.1/dist/css/tabler.min.css" />
+
+    <!--customize Google font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+    <style>
+        :root {
+            --tblr-font-sans-serif: "Inter";
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <!-- Sidebar -->
+        <aside class="navbar navbar-vertical navbar-expand-sm" data-bs-theme="dark">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <h1 class="navbar-brand navbar-brand-autodark">
+                    <a href="#">
+                        <img src=url(../images/avatar.jpg) width="110" height="32" alt="Dashboard"
+                            class="navbar-brand-image" />
+                    </a>
+                </h1>
+                <div class="collapse navbar-collapse" id="sidebar-menu">
+                    <ul class="navbar-nav pt-lg-3">
+                        <li class="nav-item">
+                            <a href="./dashboard.html" class="nav-link">
+                                <span class="nav-link-title">后台首页</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./dashboard.html?page='posts'">
+                                <span class="nav-link-title"> 文章管理 </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span class="nav-link-title"> 用户管理 </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span class="nav-link-title"> 评论管理 </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <span class="nav-link-tile">日志管理</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </aside>
+        <!-- 文章管理页面 -->
+        <div class="page-wrapper" id="edit">
+            <div class="row row-deck row-cards">
+                <div class="col-12">
+                    <div class="card m-4">
+                        <div class="card-body border-bottom py-3">
+                            <div class="d-flex">
+                                <div class="ms-auto text-secondary">
+                                    <div class="ms-2 d-inline-block">
+                                        <input type="text" class="form-control form-control m-0"
+                                            aria-label="Search invoice" placeholder="Search for…">
+                                    </div>
+                                    <div class="ms-2 d-inline-block">
+                                        <a href="#" class="btn btn-icon" aria-label="Button">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="20" height="20"
+                                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <circle cx="10" cy="10" r="7" />
+                                                <line x1="21" y1="21" x2="15" y2="15" />
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive ">
+                            <table class="table table-selectable card-table table-vcenter text-nowrap datatable">
+                                <thead>
+                                    <tr>
+                                        <th>文章id</th>
+                                        <th>文章标题</th>
+                                        <th>分类</th>
+                                        <th>标签</th>
+                                        <th>状态</th>
+                                        <th>发布时间</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="text-secondary">1</span></td>
+                                        <td><a href="invoice.html" class="text-reset" tabindex="-1">SQL基础语法</a></td>
+                                        <td>数据库</td>
+                                        <td>sql</td>
+                                        <td><span class="badge bg-yellow me-1"></span>草稿</td>
+                                        <td> 2025.02.21</td>
+                                        <td class="text-end">
+                                            <a href="./dashboard.html?edit=post_id" class="btn" role="button">编辑</a>
+                                            <a href="./dashboard.html?delete=post_id" class="btn" role="button">删除</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="text-secondary">1</span></td>
+                                        <td><a href="invoice.html" class="text-reset" tabindex="-1">SQL基础语法</a></td>
+                                        <td>数据库</td>
+                                        <td>sql</td>
+                                        <td><span class="badge bg-success me-1"></span>发布</td>
+                                        <td> 2025.02.21</td>
+                                        <td class="text-end">
+                                            <a href="#" class="btn" role="button">编辑</a>
+                                            <a href="#" class="btn" role="button">删除</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="text-secondary">1</span></td>
+                                        <td><a href="invoice.html" class="text-reset" tabindex="-1">SQL基础语法</a></td>
+                                        <td>数据库</td>
+                                        <td>sql</td>
+                                        <td><span class="badge bg-yellow me-1"></span>草稿</td>
+                                        <td> 2025.02.21</td>
+                                        <td class="text-end">
+                                            <a href="#" class="btn" role="button">编辑</a>
+                                            <a href="#" class="btn" role="button">删除</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="text-secondary">1</span></td>
+                                        <td><a href="invoice.html" class="text-reset" tabindex="-1">SQL基础语法</a></td>
+                                        <td>数据库</td>
+                                        <td>sql</td>
+                                        <td><span class="badge bg-yellow me-1"></span>草稿</td>
+                                        <td> 2025.02.21</td>
+                                        <td class="text-end">
+                                            <a href="#" class="btn" role="button">编辑</a>
+                                            <a href="#" class="btn" role="button">删除</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="text-secondary">1</span></td>
+                                        <td><a href="invoice.html" class="text-reset" tabindex="-1">SQL基础语法</a></td>
+                                        <td>数据库</td>
+                                        <td>sql</td>
+                                        <td><span class="badge bg-yellow me-1"></span>草稿</td>
+                                        <td> 2025.02.21</td>
+                                        <td class="text-end">
+                                            <a href="#" class="btn" role="button">编辑</a>
+                                            <a href="#" class="btn" role="button">删除</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="text-secondary">1</span></td>
+                                        <td><a href="invoice.html" class="text-reset" tabindex="-1">SQL基础语法</a></td>
+                                        <td>数据库</td>
+                                        <td>sql</td>
+                                        <td><span class="badge bg-yellow me-1"></span>草稿</td>
+                                        <td> 2025.02.21</td>
+                                        <td class="text-end">
+                                            <a href="#" class="btn" role="button">编辑</a>
+                                            <a href="#" class="btn" role="button">删除</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="text-secondary">1</span></td>
+                                        <td><a href="invoice.html" class="text-reset" tabindex="-1">SQL基础语法</a></td>
+                                        <td>数据库</td>
+                                        <td>sql</td>
+                                        <td><span class="badge bg-yellow me-1"></span>草稿</td>
+                                        <td> 2025.02.21</td>
+                                        <td class="text-end">
+                                            <a href="#" class="btn" role="button">编辑</a>
+                                            <a href="#" class="btn" role="button">删除</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="text-secondary">1</span></td>
+                                        <td><a href="invoice.html" class="text-reset" tabindex="-1">SQL基础语法</a></td>
+                                        <td>数据库</td>
+                                        <td>sql</td>
+                                        <td><span class="badge bg-yellow me-1"></span>草稿</td>
+                                        <td> 2025.02.21</td>
+                                        <td class="text-end">
+                                            <a href="#" class="btn" role="button">编辑</a>
+                                            <a href="#" class="btn" role="button">删除</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="text-secondary">1</span></td>
+                                        <td><a href="invoice.html" class="text-reset" tabindex="-1">SQL基础语法</a></td>
+                                        <td>数据库</td>
+                                        <td>sql</td>
+                                        <td><span class="badge bg-yellow me-1"></span>草稿</td>
+                                        <td> 2025.02.21</td>
+                                        <td class="text-end">
+                                            <a href="#" class="btn" role="button">编辑</a>
+                                            <a href="#" class="btn" role="button">删除</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="text-secondary">1</span></td>
+                                        <td><a href="invoice.html" class="text-reset" tabindex="-1">SQL基础语法</a></td>
+                                        <td>数据库</td>
+                                        <td>sql</td>
+                                        <td><span class="badge bg-yellow me-1"></span>草稿</td>
+                                        <td> 2025.02.21</td>
+                                        <td class="text-end flex-column">
+                                            <a href="#" class="btn" role="button">编辑</a>
+                                            <a href="#" class="btn" role="button">删除</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card-footer d-flex align-items-center">
+                            <ul class="pagination m-0 ms-auto">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                        <!-- Download SVG icon from http://tabler.io/icons/icon/chevron-left -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                                            <path d="M15 6l-6 6l6 6"></path>
+                                        </svg>
+                                        prev
+                                    </a>
+                                </li>
+                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item active"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">
+                                        next
+                                        <!-- Download SVG icon from http://tabler.io/icons/icon/chevron-right -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                                            <path d="M9 6l6 6l-6 6"></path>
+                                        </svg>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.1.1/dist/js/tabler.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>sign-up</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.1.1/dist/css/tabler.min.css" />
+
+  <!--customize Google font-->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --tblr-font-sans-serif: "Inter";
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <!-- Sidebar -->
+    <aside class="navbar navbar-vertical navbar-expand-sm" data-bs-theme="dark">
+      <div class="container-fluid">
+        <button class="navbar-toggler" type="button">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <h1 class="navbar-brand navbar-brand-autodark">
+          <a href="#">
+            <img src=url(../images/avatar.jpg) width="110" height="32" alt="Dashboard" class="navbar-brand-image" />
+          </a>
+        </h1>
+        <div class="collapse navbar-collapse" id="sidebar-menu">
+          <ul class="navbar-nav pt-lg-3">
+            <li class="nav-item">
+              <a href="./dashboard.html" class="nav-link">
+                <span class="nav-link-title">后台首页</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./dashboard.html?page='posts'">
+                <span class="nav-link-title"> 文章管理 </span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <span class="nav-link-title"> 用户管理 </span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <span class="nav-link-title"> 评论管理 </span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <span class="nav-link-tile">日志管理</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+    <!-- 后台首页 -->
+    <div class="page-wrapper">
+      <div class="page-header">
+        <div class="container-xl">
+          <div class="row g-2 align-items-center">
+            <div class="col">
+              <h2 class="page-title">
+
+              </h2>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="page-body">
+        <div class="container-xl">
+          <div class="row row-deck row-cards align-items-center">
+            <div class="col-4">
+              <div class="card m-2">
+                <div class="row row-0">
+                  <div class="col-3">
+                    <!-- Photo -->
+                    <img src="../images/avatar.jpg" class="w-auto h-100 object-cover card-img-start" alt="">
+                  </div>
+                  <div class="col">
+                    <div class="card-body">
+                      <h3 class="card-title">这就是个简单的博客后台页面</h3>
+                      <p class="text-secondary">
+                        基于boostrap5开发，使用了基于bootstrap5的UI库Tabler。
+                        <a href="https://github.com/tabler/tabler">Github</a>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="card m-2">
+                <div class="card-body" style="height: 5rem;">时间及IP地址</div>
+              </div>
+            </div>
+          </div>
+          <div class="row row-deck row-cards">
+            <div class="col-2">
+              <div class="card m-2">
+                <div class="card-body" style="height: 5rem;">
+                  文章总数
+                </div>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="card m-2">
+                <div class="card-body" style="height: 5rem;">
+                  草稿数
+                </div>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="card m-2">
+                <div class="card-body" style="height: 5rem;">
+                  评论数
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row row-deck row-cards">
+            <div class="col-4">
+              <div class="card m-2">
+                <div class="card-body" style="height: 30rem;">
+                  <div class="input-group ms-auto">
+                    <h4 class="m-2">分类</h4>
+                    <input type="text" class="form-control" placeholder="请输入新的分类" data-listener-added_7cb5886f="true">
+                    <button class="btn" type="button">添加分类</button>
+                  </div>
+                  <div class="list-group list-group-flush overflow-auto" style="max-height: 25rem;">
+                    <span class="list-group-item d-flex align-items-center m-0">
+                      <p class="m-0">SQL基础教程</p>
+                      <button class="btn btn-danger btn-sm ms-auto m-0">删除</button>
+                    </span>
+                    <span class="list-group-item d-flex align-items-center m-0">
+                      <p class="m-0">SQL基础教程</p>
+                      <button class="btn btn-danger btn-sm ms-auto m-0">删除</button>
+                    </span>
+                    <span class="list-group-item d-flex align-items-center m-0">
+                      <p class="m-0">SQL基础教程</p>
+                      <button class="btn btn-danger btn-sm ms-auto m-0">删除</button>
+                    </span>
+                    <span class="list-group-item d-flex align-items-center m-0">
+                      <p class="m-0">SQL基础教程</p>
+                      <button class="btn btn-danger btn-sm ms-auto m-0">删除</button>
+                    </span>
+                    <span class="list-group-item d-flex align-items-center m-0">
+                      <p class="m-0">SQL基础教程</p>
+                      <button class="btn btn-danger btn-sm ms-auto m-0">删除</button>
+                    </span>
+                    <span class="list-group-item d-flex align-items-center m-0">
+                      <p class="m-0">SQL基础教程</p>
+                      <button class="btn btn-danger btn-sm ms-auto m-0">删除</button>
+                    </span>
+                    <span class="list-group-item d-flex align-items-center m-0">
+                      <p class="m-0">SQL基础教程</p>
+                      <button class="btn btn-danger btn-sm ms-auto m-0">删除</button>
+                    </span>
+                    <span class="list-group-item d-flex align-items-center m-0">
+                      <p class="m-0">SQL基础教程</p>
+                      <button class="btn btn-danger btn-sm ms-auto m-0">删除</button>
+                    </span>
+                    <span class="list-group-item d-flex align-items-center m-0">
+                      <p class="m-0">SQL基础教程</p>
+                      <button class="btn btn-danger btn-sm ms-auto m-0">删除</button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="card m-2">
+                <div class="card-body" style="height: 30rem;">
+                  <div class="input-group ms-auto">
+                    <h4 class="m-2">标签</h4>
+                    <input type="text" class="form-control" placeholder="请输入新的标签" data-listener-added_7cb5886f="true">
+                    <button class="btn" type="button">添加标签</button>
+                  </div>
+                  <div class="tag-list m-3">
+                    <span class="tag badge bg-blue text-blue-fg">
+                      JavaScript
+                      <a href="#" class="btn-close"></a>
+                    </span>
+                    <span class="tag">
+                      JavaScript
+                      <a href="#" class="btn-close"></a>
+                    </span>
+                    <span class="tag">
+                      JavaScript
+                      <a href="#" class="btn-close"></a>
+                    </span>
+                    <span class="tag">
+                      JavaScript
+                      <a href="#" class="btn-close"></a>
+                    </span>
+                    <span class="tag">
+                      JavaScript
+                      <a href="#" class="btn-close"></a>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.1.1/dist/js/tabler.min.js"></script>
+</body>
+
+</html>
