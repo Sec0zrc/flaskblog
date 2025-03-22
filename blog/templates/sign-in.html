@@ -22,20 +22,20 @@
         <div class="container container-tight py-4">
           <div class="card card-md">
             <div class="card-body">
-              <form action="./" method="get" autocomplete="off" novalidate="">
+              <form action="/login" method="get" autocomplete="off" novalidate="">
                 <div class="mb-3">
-                  <label class="form-label">Email address</label>
-                  <input type="email" class="form-control" placeholder="your@email.com" autocomplete="off">
+                  <label class="form-label">Username</label>
+                  <input type="text" class="form-control" placeholder="username" autocomplete="off" name="username">
                 </div>
                 <div class="mb-2">
                   <label class="form-label">
                     Password
-                    <span class="form-label-description">
+                    <span class="form-label-description visually-hidden">
                       <a href="./forgot-password.html">I forgot password</a>
                     </span>
                   </label>
                   <div class="input-group input-group-flat">
-                    <input type="password" class="form-control" placeholder="Your password" autocomplete="off">
+                    <input type="password" class="form-control" placeholder="Your password" autocomplete="off" name="password">
                     <span class="input-group-text">
                       <a href="#" class="link-secondary" data-bs-toggle="tooltip" aria-label="Show password" data-bs-original-title="Show password">
                         <!-- Download SVG icon from http://tabler.io/icons/icon/eye -->
@@ -59,7 +59,7 @@
               </form>
             </div>
           </div>
-          <div class="text-center text-secondary mt-3">Don't have account yet? <a href="./sign-up.html" tabindex="-1">Sign up</a></div>
+          <div class="text-center text-secondary mt-3">Don't have account yet? <a href="./sign-up" tabindex="-1">Sign up</a></div>
         </div>
       </div>
 
