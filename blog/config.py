@@ -16,7 +16,7 @@ class Config:
 
 class TestConfig:
     Debug = True
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:123456@localhost:3306/testing"
+    SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = 'test_secret_key'
     JWT_SECRET_KEY = 'test_jwt_secret_key'

@@ -1,11 +1,15 @@
 import datetime
-
+import logging
 from flask import jsonify
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt
+from sqlalchemy.exc import SQLAlchemyError
+
 from blog.extension import redis_client
 from blog.models import User
 from blog.extension import db
+
+logging.basicConfig(level=logging.INFO)
 
 
 class AuthLogin(Resource):
@@ -25,15 +29,22 @@ class AuthLogin(Resource):
         # print("username:", username, "password:", password)
 
         # 验证用户名密码
+        result = User.authenticate(username, password)
+        flag_user_exist = result[0]
+        flag_password_correct = result[1]
+        user = result[2]
+        logging.info(f'flag_user_exist:{flag_user_exist}, flag_password_correct:{flag_password_correct}, user:{user}')
+
         try:
-            flag_user_exist, flag_password_correct, user = User.authenticate(username, password)
             if not flag_user_exist:
                 code = 404
                 message = '用户不存在'
-            elif not flag_password_correct:
+                return jsonify({'code': code, 'message': message})
+            if not flag_password_correct:
                 code = 400
                 message = '密码错误'
-            else:
+                return jsonify({'code': code, 'message': message})
+            elif user.check_status():
                 code = 200
                 message = '登录成功'
                 # 将用户状态设置为1
@@ -45,11 +56,27 @@ class AuthLogin(Resource):
                     'username': user.username
                 }, expires_delta=datetime.timedelta(seconds=3600))
                 userid = user.user_id
-
-            return jsonify({'code': code, 'message': message, 'token': token, 'userid': userid})
+                response = jsonify({'code': code, 'message': message, 'token': token, 'userid': userid})
+                response.set_cookie('token', token, expires=3600, secure=True, httponly=True)
+                return response
+            else:
+                # user status为1，表示已登录
+                code = 400
+                message = '用户已被锁定'
+                userid = user.user_id
+                return jsonify({'code': code, 'message': message})
+        except SQLAlchemyError as e:
+            # 针对数据库异常进行回滚操作
+            code = 500
+            message = '更新文章失败'
+            db.session.rollback()
+            logging.error(e)
+            return jsonify({'code': code, 'message': message, 'error': str(e)})
         except Exception as e:
-            code = 400
+            code = 500
             message = '登录失败'
+            # logging.info(str(e))
+            logging.error(f"Exception occurred: {e}")
             return jsonify({'code': code, 'message': message, 'error': str(e)})
 
 
@@ -65,16 +92,32 @@ class AuthLogout(Resource):
             user_id = jti_info['user_id']
             # 将token 添加到黑名单中
             redis_client.set(jti, 'true', 3600)
+
             # 设置用户状态
             user = User.query.get(user_id)
+            if user is None:
+                code = 404
+                message = "用户不存在"
+                return jsonify({'code': code, 'message': message})
             user.status = 0
             db.session.commit()
 
             # 设置状态码等信息
             code = 200
             message = "登出成功"
-            return jsonify({'code': code, 'message': message})
+            # 删除用户cookie
+            response = jsonify({'code': code, 'message': message})
+            response.set_cookie('token', '', expires=0)
+            return response
+        except SQLAlchemyError as e:
+            # 针对数据库异常进行回滚操作
+            code = 500
+            message = '登出失败'
+            db.session.rollback()
+            logging.error(e)
+            return jsonify({'code': code, 'message': message, 'error': str(e)})
         except Exception as e:
+            db.session.rollback()
             code = 400
             message = "登出失败"
             return jsonify({'code': code, 'message': message, 'error': str(e)})

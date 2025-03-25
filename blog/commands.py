@@ -10,7 +10,8 @@ from datetime import datetime
 command_routes = Blueprint('command', __name__)
 
 fake = Faker()
-logging.basicConfig(level=logging.DEBUG)
+fake_logger = logging.getLogger('fake')
+fake_logger.setLevel(logging.WARNING)
 
 
 @command_routes.route('/initdb/<int:flag>', methods=['GET'])
@@ -28,7 +29,8 @@ def initdb(flag=0):
 def forge():
     """Generate fake data"""
     # 清空数据库 禁用mysql的外键检查
-    db.session.execute(text('SET FOREIGN_KEY_CHECKS = 0'))
+    # db.session.execute(text('SET FOREIGN_KEY_CHECKS = 0'))
+    #db.session.execute(text('PRAGMA foreign_keys = 0'))
     db.drop_all()
     db.create_all()
     logging.info("数据库初始化成功")
@@ -68,13 +70,9 @@ def forge():
         user = User.query.filter_by(username='Admin').first()
         category = Category.query.order_by(db.func.random()).first()
         tag = Tag.query.order_by(db.func.random()).first()
-        post = Post(fake.sentence())
+        post = Post(fake.sentence(), fake.paragraph(),user.user_id, category.category_id, tag.tag_id)
         post.set_create_time(datetime.now())
         post.set_status(1)
-        post.set_content(fake.paragraph())
-        post.set_userid(user.user_id)
-        post.set_category_id(category.category_id)
-        post.set_tag_id(tag.tag_id)
         db.session.add(post)
     db.session.commit()
     logging.info("文章添加成功")

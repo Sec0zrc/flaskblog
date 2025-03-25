@@ -42,17 +42,26 @@ class User(db.Model):
 
     @classmethod
     def authenticate(cls, name, password):
-        flag_username_exist = None
+        flag_username_exist = False
         flag_password_correct = None
-        # logging.info(f'name: {name}, password: {password}')
         with current_app.app_context():
-            user = cls.query.filter_by(username=name).first()
-            if user:
-                flag_username_exist = 1
-                flag_password_correct = check_password_hash(user.password_hash, password)
-            else:
-                flag_username_exist = 0
-            return flag_username_exist, flag_password_correct, user
+            try:
+                user = cls.query.filter_by(username=name).first()
+                if user:
+                    password_hash = user.password_hash
+                    flag_username_exist = True
+                    flag_password_correct = check_password_hash(password_hash, password)
+
+                return [flag_username_exist, flag_password_correct, user]
+            except Exception as e:
+                logging.error(e)
+                return [0, 0, None]
+
+    def check_status(self):
+        if self.status == 0:
+            return True
+        else:
+            return False
 
 
 class Category(db.Model):
@@ -63,6 +72,18 @@ class Category(db.Model):
     def __init__(self, category_name):
         self.category_name = category_name
 
+    def get_id(self, category_name):
+        category = Category.query.filter_by(category_name=category_name).first()
+        if category:
+            return category.category_id
+        else:
+            # 创建新的category
+            category = Category(category_name)
+            db.session.add(category)
+            db.session.commit()
+            category = Category.query.filter_by(category_name=category_name).first()
+            return category.category_id
+
 
 class Tag(db.Model):
     __tablename__ = 'tags'
@@ -71,6 +92,18 @@ class Tag(db.Model):
 
     def __init__(self, tag_name):
         self.tag_name = tag_name
+
+    def get_id(self, tag_name):
+        tag = Tag.query.filter_by(tag_name=tag_name).first()
+        if tag:
+            return tag.tag_id
+        else:
+            # 创建新的tag
+            tag = Tag(tag_name)
+            db.session.add(tag)
+            db.session.commit()
+            tag = Tag.query.filter_by(tag_name=tag_name).first()
+            return tag.tag_id
 
 
 class Post(db.Model):
@@ -84,8 +117,12 @@ class Post(db.Model):
     category_id = db.Column(db.Integer, db.ForeignKey('categories.category_id'))
     tag_id = db.Column(db.Integer, db.ForeignKey('tags.tag_id'))
 
-    def __init__(self, title):
+    def __init__(self, title, content, user_id, category_id, tag_id):
         self.title = title
+        self.content = content
+        self.user_id = user_id
+        self.category_id = category_id
+        self.tag_id = tag_id
 
     def set_create_time(self, create_time):
         self.create_at = create_time

@@ -9,7 +9,12 @@ api = Api(api_bp)
 
 # # 导入子模块的路由或资源
 from .auth.routes import AuthLogin, AuthLogout
-from .users.routes import User
+from .users.routes import Users
+from .posts.routes import Posts
+from .categories.routes import Categories
 
 api.add_resource(AuthLogin, '/auth/login')
 api.add_resource(AuthLogout, '/auth/logout')
+api.add_resource(Users, '/users', '/users/<int:user_id>')
+api.add_resource(Posts, '/posts', '/posts/<int:post_id>')
+api.add_resource(Categories, '/categories', '/categories/<int:category_id>')

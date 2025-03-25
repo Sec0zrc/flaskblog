@@ -18,6 +18,14 @@ def create_app(config_class):
     # 初始化SQLAlchemy
     db.init_app(app)
 
+    # 配置 JWT 密钥
+    app.config['JWT_SECRET_KEY'] = Config.JWT_SECRET_KEY
+    # 启用 JWT 在 Cookie 中存储
+    app.config['JWT_TOKEN_LOCATION'] = ['cookies']
+    # 设置访问令牌存储在 HTTPOnly 的 Cookie 中
+    app.config['JWT_COOKIE_CSRF_PROTECT'] = False  # 如果不需要 CSRF 保护可以关闭
+    app.config['JWT_ACCESS_COOKIE_PATH'] = '/'  # 访问令牌的路径
+    app.config['JWT_REFRESH_COOKIE_PATH'] = '/auth/refresh'  # 刷新令牌的路径
     # 初始化jwt
     jwt.init_app(app)
     # 工厂类函数注册app对象
