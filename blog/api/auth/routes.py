@@ -81,7 +81,7 @@ class AuthLogin(Resource):
 
 
 class AuthLogout(Resource):
-    @jwt_required
+    @jwt_required()
     def get(self):
         code = None
         message = None

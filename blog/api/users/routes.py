@@ -125,7 +125,7 @@ class Users(Resource):
             error = str(e)
             return jsonify({'code': code, 'message': message, 'error': error})
 
-    @jwt_required
+    @jwt_required()
     def delete(self, user_id):
         code = None
         message = None

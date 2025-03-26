@@ -28,18 +28,20 @@ def sign_up():
     return render_template('sign-up.html')
 
 
-@view_routes.route('/login', methods=['POST'])
+@view_routes.route('/login')
 def login():
-    try:
-        username = request.form['username']
-        password = request.form['password']
-        user = User.query.filter_by(username=username).first()
-        if user and user.validate_password(password):
-            access_token = create_access_token(identity=username)
-            return jsonify(access_token=access_token), 200
-        else:
-            return jsonify({'message': 'Invalid username or password'}), 401
-    except Exception as e:
-        return jsonify({'message': str(e)}), 500
+    print("login page")
+    return render_template('login.html')
+
+@view_routes.route('/logout')
+def logout():
+    print("logout page")
+    return render_template('logout.html')
+
+@view_routes.route('/dashboard')
+@jwt_required()
+def dashboard():
+
+    return render_template('dashboard.html')
 
 

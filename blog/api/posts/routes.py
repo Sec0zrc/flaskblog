@@ -58,7 +58,7 @@ class Posts(Resource):
                 page_num = request.args.get('page', 1, type=int)
                 per_page_num = request.args.get('per_page', 10, type=int)
                 logging.info(f'page: {page_num}, per_page: {per_page_num}')
-                
+
                 if page_num < 1:
                     code = 400
                     message = '获取文章列表失败'
@@ -138,9 +138,23 @@ class Posts(Resource):
 
         try:
             # 获取category和tag的id
+            category_id = 0
+            tag_id = 0
+            if Category.get_id(args['category']):
+                category_id = Category.get_id(args['category'])
+            else:
+                category = Category(args['category'])
+                db.session.add(category)
+                db.session.commit()
+                category_id = Category.get_id(args['category'])
 
-            category_id = Category.get_id(args['category'])
-            tag_id = Tag.get_id(args['tag'])
+            if Tag.get_id(args['tag']):
+                tag_id = Tag.get_id(args['tag'])
+            else:
+                tag = Tag(args['tag'])
+                db.session.add(tag)
+                db.session.commit()
+                tag_id = Tag.get_id(args['tag'])
 
             post = Post(args['title'], args['content'], user_id, category_id, tag_id)
             post.set_create_time(datetime.now())
@@ -189,8 +203,23 @@ class Posts(Resource):
                 post = Post.query.get(post_id)
                 if post:
                     # 获取category和tag的id
-                    category_id = Category.get_id(args['category'])
-                    tag_id = Tag.get_id(args['tag'])
+                    category_id = 0
+                    tag_id = 0
+                    if Category.get_id(args['category']):
+                        category_id = Category.get_id(args['category'])
+                    else:
+                        category = Category(args['category'])
+                        db.session.add(category)
+                        db.session.commit()
+                        category_id = Category.get_id(args['category'])
+
+                    if Tag.get_id(args['tag']):
+                        tag_id = Tag.get_id(args['tag'])
+                    else:
+                        tag = Tag(args['tag'])
+                        db.session.add(tag)
+                        db.session.commit()
+                        tag_id = Tag.get_id(args['tag'])
 
                     post.set_title(args['title'])
                     post.set_content(args['content'])

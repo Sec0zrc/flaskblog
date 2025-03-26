@@ -70,7 +70,7 @@ class Categories(Resource):
                 message = 'Failed to create category'
                 return jsonify({'code': code, 'message': message, 'error': str(e)})
 
-    @jwt_required
+    @jwt_required()
     def delete(self, category_id):
         code = None
         message = None

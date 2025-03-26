@@ -77,12 +77,7 @@ class Category(db.Model):
         if category:
             return category.category_id
         else:
-            # 创建新的category
-            category = Category(category_name)
-            db.session.add(category)
-            db.session.commit()
-            category = Category.query.filter_by(category_name=category_name).first()
-            return category.category_id
+            return False
 
 
 class Tag(db.Model):
@@ -98,12 +93,8 @@ class Tag(db.Model):
         if tag:
             return tag.tag_id
         else:
-            # 创建新的tag
-            tag = Tag(tag_name)
-            db.session.add(tag)
-            db.session.commit()
-            tag = Tag.query.filter_by(tag_name=tag_name).first()
-            return tag.tag_id
+            # 返沪False
+            return False
 
 
 class Post(db.Model):
