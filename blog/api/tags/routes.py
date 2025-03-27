@@ -11,10 +11,46 @@ from flask_jwt_extended import jwt_required
 
 class Tags(Resource):
 
-    def get(self):
+    def get(self, tag_id=None):
         code = None
         message = None
 
+        # 如果tag_id不为空，返回所有该tag的文章列表
+        if tag_id:
+            try:
+                posts = db.session.query(Tag).join(Tag.posts).filter(Tag.tag_id == tag_id).all()
+                posts_list = []
+                if posts:
+                    for post in posts:
+                        posts_list.append({
+                            'post_id': post.post_id,
+                            'title': post.title,
+                            'content': post.content,
+                            'create_at': post.create_at,
+                            'status': post.status,
+                            'category_id': post.category_id,
+                        })
+                    code = 200
+                    message = 'success'
+                    return jsonify({'code': code, 'message': message, 'data': posts_list})
+                else:
+                    code = 404
+                    message = 'posts not found'
+                    return jsonify({'code': code, 'message': message})
+            except SQLAlchemyError as e:
+                db.session.rollback()
+                code = 400
+                message = 'bad request'
+                logging.error(e)
+                return jsonify({'code': code, 'message': message, "error": str(e)})
+            except Exception as e:
+                db.session.rollback()
+                code = 400
+                message = 'bad request'
+                logging.error(e)
+                return jsonify({'code': code, 'message': message, "error": str(e)})
+
+        # 如果tag_id 为None
         try:
             tags = Tag.query.all()
             tags_list = []
@@ -71,7 +107,7 @@ class Tags(Resource):
                 code = 500
                 message = 'internal server error'
                 logging.error(e)
-                return jsonify({'code': code, 'message': message,"error": str(e)})
+                return jsonify({'code': code, 'message': message, "error": str(e)})
         else:
             code = 401
             message = 'unauthorized'

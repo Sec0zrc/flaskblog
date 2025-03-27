@@ -143,7 +143,7 @@
                     </article>
                 </div>
             </div>
-
+        </div>
         </div>
         <footer class="footer footer-transparent d-print-none mt-0">
             <div class="container-xl">
@@ -155,8 +155,20 @@
             </div>
           </footer>
 
+    <script>
+        //get post_id from window_search_params
+        const search_params = new URLSearchParams(window.location.search);
+        const post_id = search_params.get('post_id');
+        if (search_params.has('post_id')) {
+            //get posts from server
+            fetch(`/api/v1/posts/${post_id}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
 
+                });
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.1.1/dist/js/tabler.min.js"></script>
 </body>
-
 </html>

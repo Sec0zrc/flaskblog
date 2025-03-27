@@ -17,31 +17,34 @@ def home():
     return render_template('index.html')
 
 
-@view_routes.route('/sign-in')
+@view_routes.route('/sign-in.html')
 def sign_in():
     return render_template('sign-in.html')
 
 
-@view_routes.route('/sign-up')
+@view_routes.route('/sign-up.html')
 def sign_up():
     print("sign -up")
     return render_template('sign-up.html')
 
 
-@view_routes.route('/login')
+@view_routes.route('/login.html')
 def login():
     print("login page")
     return render_template('login.html')
 
-@view_routes.route('/logout')
+
+@view_routes.route('/logout.html')
 def logout():
     print("logout page")
     return render_template('logout.html')
 
-@view_routes.route('/dashboard')
+
+@view_routes.route('/dashboard.html')
 @jwt_required()
 def dashboard():
-
     return render_template('dashboard.html')
 
-
+@view_routes.route('/posts.html')
+def posts():
+    return render_template('posts.html')
