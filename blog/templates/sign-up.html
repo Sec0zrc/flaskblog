@@ -20,15 +20,11 @@
 <body>
     <div class="page page-center">
         <div class="container container-tight py-4">
-          <form class="card card-md" action="./" method="get" autocomplete="off" novalidate="">
+          <form class="card card-md" action="#" method="post" autocomplete="off" novalidate="">
             <div class="card-body">
               <div class="mb-3">
                 <label class="form-label">Name</label>
                 <input type="text" class="form-control" placeholder="Enter name">
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Email address</label>
-                <input type="email" class="form-control" placeholder="Enter email">
               </div>
               <div class="mb-3">
                 <label class="form-label">Password</label>
@@ -46,7 +42,7 @@
                 </div>
               </div>
               <div class="form-footer">
-                <button type="submit" class="btn btn-primary w-100">Create new account</button>
+                <button type="submit" class="btn btn-primary w-100" >Create new account</button>
               </div>
             </div>
           </form>
@@ -54,5 +50,40 @@
         </div>
       </div>
     <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.1.1/dist/js/tabler.min.js"></script>
+    <script>
+        async function registrate() {
+            const name = document.querySelector('input[type="text"]').value;
+            const password = document.querySelector('input[type="password"]').value;
+
+            const users = {"username": name, "password": password};
+            // check if name and password are not empty
+            if (name === '' || password === '') {
+                alert('Name and password cannot be empty')
+                return false;
+            }else {
+                let response = await fetch('/api/v1/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(users)
+                });
+                let result = await response.json();
+
+                if (result.code === 200) {
+                    alert('Registration successful');
+                    window.location.href = './sign-in.html';
+                }else {
+                    alert(`Registration fail : ${result.error}`);
+                }
+            }
+
+        }
+
+        document.querySelector('button[type="submit"]').addEventListener('click', (e) => {
+            e.preventDefault();
+            registrate();
+        });
+    </script>
 </body>
 </html>

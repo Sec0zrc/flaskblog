@@ -121,3 +121,33 @@ class AuthLogout(Resource):
             code = 400
             message = "登出失败"
             return jsonify({'code': code, 'message': message, 'error': str(e)})
+
+
+class Registration(Resource):
+    def post(self):
+        code = None
+        message = None
+        try:
+            parser = reqparse.RequestParser()
+            parser.add_argument('username', type=str, required=True, location='json', help='用户名不能为空')
+            parser.add_argument('password', type=str, required=True, location='json', help='密码不能为空')
+            args = parser.parse_args()
+            username = args['username']
+            password = args['password']
+            user = User(username, password)
+            db.session.add(user)
+            db.session.commit()
+            code = 200
+            message = '注册成功'
+            return jsonify({'code': code, 'message': message})
+        except SQLAlchemyError as e:
+            # 针对数据库异常进行回滚操作
+            code = 500
+            message = '注册失败'
+            db.session.rollback()
+            logging.error(e)
+            return jsonify({'code': code, 'message': message, 'error': str(e)})
+        except Exception as e:
+            code = 500
+            message = '注册失败'
+            return jsonify({'code': code, 'message': message, 'error': str(e)})
