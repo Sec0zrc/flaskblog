@@ -48,6 +48,7 @@ class AuthLogin(Resource):
                 code = 200
                 message = '登录成功'
                 # 将用户状态设置为1
+                user = User.query.get(user.user_id)
                 user.status = 1
                 db.session.commit()
                 # 创建jwt token，设置好过期时间

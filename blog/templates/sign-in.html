@@ -22,7 +22,7 @@
         <div class="container container-tight py-4">
           <div class="card card-md">
             <div class="card-body">
-              <form action="/login" method="get" autocomplete="off" novalidate="">
+              <form action="#" method="post" autocomplete="off" novalidate="">
                 <div class="mb-3">
                   <label class="form-label">Username</label>
                   <input type="text" class="form-control" placeholder="username" autocomplete="off" name="username">
@@ -31,7 +31,7 @@
                   <label class="form-label">
                     Password
                     <span class="form-label-description visually-hidden">
-                      <a href="./forgot-password.html">I forgot password</a>
+                      <a href="#">I forgot password</a>
                     </span>
                   </label>
                   <div class="input-group input-group-flat">
@@ -62,7 +62,46 @@
           <div class="text-center text-secondary mt-3">Don't have account yet? <a href="./sign-up" tabindex="-1">Sign up</a></div>
         </div>
       </div>
+    <script>
+        async function login(){
+            let username = document.querySelector('input[type="text"]').value;
+            let password = document.querySelector('input[type="password"]').value;
+            if (username === '' || password === '') {
+                alert('Username and password cannot be empty');
+                return false;
+            }
+            let data = {
+                "username": username,
+                "password": password
+            };
+            let promise = await fetch('/api/v1/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            let response = await promise.json();
+            if (response.code === 200) {
+                console.log(response.message)
+                console.log("success to login")
+                //window.location.href = '/';
+            }else {
+                alert(response.message);
+            }
+        }
+        document.querySelector('button[type="submit"]').addEventListener('click', (e) => {
+            e.preventDefault();
+            login();
+        })
 
+        window.onload = function () {
+            let username = document.querySelector('input[type="text"]');
+            let password = document.querySelector('input[type="password"]');
+            username.value = localStorage.getItem('username');
+            password.value = localStorage.getItem('password');
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.1.1/dist/js/tabler.min.js"></script>
 </body>
 </html>
