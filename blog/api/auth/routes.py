@@ -2,7 +2,7 @@ import datetime
 import logging
 from flask import jsonify
 from flask_restful import Resource, reqparse
-from flask_jwt_extended import jwt_required, create_access_token, get_jwt
+from flask_jwt_extended import jwt_required, create_access_token, get_jwt, set_access_cookies
 from sqlalchemy.exc import SQLAlchemyError
 
 from blog.extension import redis_client
@@ -52,13 +52,14 @@ class AuthLogin(Resource):
                 user.status = 1
                 db.session.commit()
                 # 创建jwt token，设置好过期时间
-                token = create_access_token(identity={
-                    'user_id': user.user_id,
-                    'username': user.username
-                }, expires_delta=datetime.timedelta(seconds=3600))
+
+                token = create_access_token(identity=str(user.user_id),
+                                            additional_claims={'username': user.username},
+                                            expires_delta=datetime.timedelta(seconds=3600))
                 userid = user.user_id
                 response = jsonify({'code': code, 'message': message, 'token': token, 'userid': userid})
-                response.set_cookie('token', token, expires=3600, secure=True, httponly=True)
+                # response.set_cookie('token', token, expires=3600, secure=True, httponly=True)
+                set_access_cookies(response, token)
                 return response
             else:
                 # user status为1，表示已登录
@@ -69,7 +70,7 @@ class AuthLogin(Resource):
         except SQLAlchemyError as e:
             # 针对数据库异常进行回滚操作
             code = 500
-            message = '更新文章失败'
+            message = '登录失败'
             db.session.rollback()
             logging.error(e)
             return jsonify({'code': code, 'message': message, 'error': str(e)})

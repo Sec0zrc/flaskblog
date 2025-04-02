@@ -25,4 +25,5 @@ def my_expired_token_callback(jwt_header, jwt_payload):
     if user:
         user.status = 0
         db.session.commit()
+        redis_client.sadd(jwt_payload['jti'])
     return jsonify({"msg": "Token has expired"})

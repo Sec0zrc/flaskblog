@@ -28,6 +28,7 @@ def create_app(config_class):
     app.config['JWT_REFRESH_COOKIE_PATH'] = '/auth/refresh'  # 刷新令牌的路径
     # 初始化jwt
     jwt.init_app(app)
+
     # 工厂类函数注册app对象
     # 延迟注册 确保api_bp已初始化
     with app.app_context():
@@ -46,15 +47,5 @@ def create_app(config_class):
 
 if __name__ == '__main__':
     app = create_app(Config)
-    print(app.url_map)
-
-    @app.route('/test_db')
-    def test_db():
-        try:
-            db.session.execute(text('SELECT 1'))
-            return '<h1>Database connection is successful!</h1>'
-        except Exception as e:
-            return f'<h1>Error: {str(e)}</h1>'
-
-
+    # print(app.url_map)
     app.run(host='0.0.0.0', port=5000, debug=True)

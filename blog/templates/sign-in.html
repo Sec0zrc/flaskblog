@@ -83,9 +83,10 @@
             });
             let response = await promise.json();
             if (response.code === 200) {
-                console.log(response.message)
-                console.log("success to login")
-                //window.location.href = '/';
+                console.log(response)
+                alert('Login success')
+                //document.cookie = `token=${response.token}; path=/;`;
+                window.location.href='/';
             }else {
                 alert(response.message);
             }
