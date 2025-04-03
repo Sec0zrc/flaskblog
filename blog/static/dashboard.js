@@ -1,76 +1,3 @@
-// pagination function 
-function updatePagination(data) {
-    const pagination_container = document.querySelector('.pagination.m-0.ms-auto');
-    pagination_container.innerHTML = '';
-    let current_page = data.data['page']
-    let total_page = data.data['pages']
-
-    // add prev button
-    if (current_page > 1) {
-        const prevButton = document.createElement('li');
-        prevButton.className = 'page-item';
-        prevButton.innerHTML = `            <a class="page-link" href="#" onclick="load_page(${current_page - 1})">
-                <!-- Download SVG icon from http://tabler.io/icons/icon/chevron-left -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" class="icon icon-1">
-                    <path d="M15 6l-6 6l6 6"></path>
-                </svg>
-                prev
-            </a>`;
-        pagination_container.appendChild(prevButton);
-    }
-    // add page index
-    for (let i = 1; i <= total_page; i++) {
-        const pageButton = document.createElement('li');
-        pageButton.className = 'page-item';
-        pageButton.innerHTML = `<a class="page-link" href="#" onclick="load_page(${i})">${i}</a>`;
-        pagination_container.appendChild(pageButton);
-    }
-    // add next button 
-    if (current_page < total_page) {
-        const nextButton = document.createElement('li');
-        nextButton.className = 'page-item';
-        nextButton.innerHTML = `<a class="page-link" href="#" onclick="load_page(${current_page + 1})">
-                                    next
-                                    <!-- Download SVG icon from http://tabler.io/icons/icon/chevron-right -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="icon icon-1">
-                                        <path d="M9 6l6 6l-6 6"></path>
-                                    </svg>
-                                </a>`;
-        pagination_container.appendChild(nextButton);
-    }
-}
-
-function load_page(page) {
-    const baseUrl = 'http://127.0.0.1:5000';
-    const per_page = 10;
-    // let promise = getData(baseUrl, page, per_page);
-    let promise = get_data(baseUrl, page, per_page);
-    promise.then(data => {
-        const container = document.querySelector('.row.row-cards.mb-3');
-        container.innerHTML = '<h3 class="mb-0">最新文章 <span class="badge">new</span></h3>';
-        let posts_list = data.data['posts'];
-        for (let i = 0; i < posts_list.length; i++) {
-            let post = posts_list[i];
-            const current_url = window.location.path;
-            const card = document.createElement('div');
-            card.className = 'card card-sm ms-auto';
-            card.innerHTML += `<div class="card-body">
-                                <a href="/posts.html?post_id=${post.post_id}" class="link">
-                                    <span class="title">${post.title}</span>
-                                </a>
-                                <spane class="float-end">${post.create_at}</span>
-                            </div>
-                        </div>`
-            container.appendChild(card);
-        }
-        updatePagination(data);
-    });
-}
-
 async function get_data(baseUrl, ...args) {
     if (args.length > 0) {
         // get the pagination data
@@ -87,12 +14,11 @@ async function get_data(baseUrl, ...args) {
             console.log('error');
             return false;
         }
-    
+
     } else {
         // barely get the data
         let promise = await fetch(baseUrl, {
-            method: 'GET',
-            headers: {
+            method: 'GET', headers: {
                 'Content-Type': 'application/json'
             }
         });
@@ -107,7 +33,7 @@ async function get_data(baseUrl, ...args) {
 
 }
 
-async function load_category(){
+async function load_category() {
     let baseUrl = window.location.origin;
     let target = `${baseUrl}/api/v1/categories`
     let result = get_data(target);
@@ -116,7 +42,7 @@ async function load_category(){
         let category_data = data.data;
         const category_container = document.querySelector('.list-group.list-group-flush.overflow-auto');
         category_container.innerHTML = '';
-        for(let i = 0; i < category_data.length; i++){
+        for (let i = 0; i < category_data.length; i++) {
             let category_id = category_data[i].category_id;
             let category_name = category_data[i].category_name;
             const span = document.createElement('span');
@@ -128,7 +54,7 @@ async function load_category(){
     });
 }
 
-async function load_tag(){
+async function load_tag() {
     let baseUrl = window.location.origin;
     let target = `${baseUrl}/api/v1/tags`
     let result = get_data(target);
@@ -137,7 +63,7 @@ async function load_tag(){
         let tag_data = data.data;
         const tag_container = document.querySelector('.tag-list.m-3');
         tag_container.innerHTML = '';
-        for(let i = 0; i < tag_data.length; i++){
+        for (let i = 0; i < tag_data.length; i++) {
             let tag_id = tag_data[i].tag_id;
             let tag_name = tag_data[i].tag_name;
             console.log(tag_name);
@@ -158,11 +84,9 @@ async function add_category(category_name) {
         return;
     }
     let promise = await fetch(target, {
-        method: 'POST',
-        headers: {
+        method: 'POST', headers: {
             'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
+        }, body: JSON.stringify({
             "category_name": category_name
         })
     });
@@ -187,11 +111,9 @@ async function add_tag(tag_name) {
     let baseUrl = window.location.origin;
     let target = `${baseUrl}/api/v1/tags`
     let promise = await fetch(target, {
-        method: 'POST',
-        headers: {
+        method: 'POST', headers: {
             'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
+        }, body: JSON.stringify({
             "tag_name": tag_name
         })
     });
@@ -229,7 +151,7 @@ async function dashboard_load() {
         const count_container = document.querySelector('#sketch_count');
         count_container.innerHTML = skecth_count;
     });
-    
+
     // get category list
     load_category();
 
@@ -252,21 +174,19 @@ async function dashboard_load() {
 }
 
 
-
-async function delete_category(element){
+async function delete_category(element) {
     let url = window.location.origin;
     let category_id = element.id;
     console.log(element);
     let tartget = `${url}/api/v1/categories/${category_id}`;
     let promise = await fetch(tartget, {
-        method: 'DELETE',
-        headers: {
+        method: 'DELETE', headers: {
             'Content-Type': 'application/json'
         }
     });
     let result = await promise.json();
     console.log(result);
-    if( result.code === 200) {
+    if (result.code === 200) {
         element.parentNode.remove();
         console.log('delete success');
     } else {
@@ -274,18 +194,17 @@ async function delete_category(element){
     }
 }
 
-async function delete_tag(element){
+async function delete_tag(element) {
     let url = window.location.origin;
     let tag_id = element.id;
     let tartget = `${url}/api/v1/tags/${tag_id}`;
     let promise = await fetch(tartget, {
-        method: 'DELETE',
-        headers: {
+        method: 'DELETE', headers: {
             'Content-Type': 'application/json'
         }
     });
     let result = await promise.json();
-    if( result.code === 200) {
+    if (result.code === 200) {
         element.parentNode.remove();
         console.log('delete success');
     } else {
@@ -293,25 +212,70 @@ async function delete_tag(element){
     }
 }
 
-function logout(){
+function logout() {
     fetch('/api/v1/logout', {
-        method: 'POST',
-        headers: {
+        method: 'POST', headers: {
             'Content-Type': 'application/json'
         }
     })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data);
-        if (data.code === 200) {
-            window.location.href ='/';
-        }
-    });
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            if (data.code === 200) {
+                window.location.href = '/';
+            }
+        });
 }
 
-async function post_load() {
+// pagination function 
+function updatePagination(data) {
+    const pagination_container = document.querySelector('.pagination.m-0.ms-auto');
+    pagination_container.innerHTML = '';
+    let current_page = data.data['page']
+    let total_page = data.data['pages']
+
+    // add prev button
+    if (current_page > 1) {
+        const prevButton = document.createElement('li');
+        prevButton.className = 'page-item';
+        prevButton.innerHTML = `            <a class="page-link" href="#" onclick="post_load(${current_page - 1})">
+                <!-- Download SVG icon from http://tabler.io/icons/icon/chevron-left -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" class="icon icon-1">
+                    <path d="M15 6l-6 6l6 6"></path>
+                </svg>
+                prev
+            </a>`;
+        pagination_container.appendChild(prevButton);
+    }
+    // add page index
+    for (let i = 1; i <= total_page; i++) {
+        const pageButton = document.createElement('li');
+        pageButton.className = 'page-item';
+        pageButton.innerHTML = `<a class="page-link" href="#" onclick="post_load(${i})">${i}</a>`;
+        pagination_container.appendChild(pageButton);
+    }
+    // add next button 
+    if (current_page < total_page) {
+        const nextButton = document.createElement('li');
+        nextButton.className = 'page-item';
+        nextButton.innerHTML = `<a class="page-link" href="#" onclick="post_load(${current_page + 1})">
+                                    next
+                                    <!-- Download SVG icon from http://tabler.io/icons/icon/chevron-right -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="icon icon-1">
+                                        <path d="M9 6l6 6l-6 6"></path>
+                                    </svg>
+                                </a>`;
+        pagination_container.appendChild(nextButton);
+    }
+}
+async function post_load(page) {
     let baseUrl = window.location.origin;
-    let result = get_data(baseUrl, 1, 10);
+    let per_page = 10;
+    let result = get_data(baseUrl, page, per_page);
     result.then(data => {
         let post_list = data.data['posts'];
         const container = document.querySelector('#post_list');
@@ -320,7 +284,7 @@ async function post_load() {
             let post = post_list[i];
             const post_url = `target/${post.post_id}`
             const tr = document.createElement('tr');
-            tr.innerHTML = `<td><span class="text-secondary">1</span></td>
+            tr.innerHTML = `<td><span class="text-secondary">${post.post_id}</span></td>
                             <td><a href="invoice.html" class="text-reset" tabindex="-1">${post.title}</a></td>
                             <td>${post.category_id}</td>
                             <td>${post.tag_id}</td>`

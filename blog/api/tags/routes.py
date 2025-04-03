@@ -5,7 +5,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from blog.extension import db
 from blog.api.users.routes import is_admin
-from blog.models import Tag
+from blog.models import Tag, Post
 from flask_jwt_extended import jwt_required
 
 
@@ -86,8 +86,8 @@ class Tags(Resource):
                 args = parser.parse_args()
 
                 tag_name = args['tag_name']
-                if Tag.get_id(tag_name):
-                    code = 409
+                if Tag.query.filter_by(tag_name=tag_name).first():
+                    code = 400
                     message = 'tag already exists'
                     return jsonify({'code': code, 'message': message})
                 else:
@@ -96,6 +96,45 @@ class Tags(Resource):
                     db.session.commit()
                     code = 201
                     message = 'tag created'
+                    return jsonify({'code': code, 'message': message})
+            except SQLAlchemyError as e:
+                db.session.rollback()
+                code = 400
+                message = 'bad request'
+                logging.error(e)
+                return jsonify({'code': code, 'message': message, "error": str(e)})
+            except Exception as e:
+                code = 500
+                message = 'internal server error'
+                logging.error(e)
+                return jsonify({'code': code, 'message': message, "error": str(e)})
+        else:
+            code = 401
+            message = 'unauthorized'
+            return jsonify({'code': code, 'message': message})
+
+    @jwt_required()
+    def delete(self, tag_id):
+        code = None
+        message = None
+        if is_admin():
+            try:
+                tag = Tag.query.filter_by(tag_id=tag_id).first()
+                if tag:
+                    # delete the foreign key in post table
+                    post = Post.query.filter_by(tag_id=tag_id)
+                    for p in post:
+                        p.tag_id = None
+                        db.session.commit()
+
+                    db.session.delete(tag)
+                    db.session.commit()
+                    code = 200
+                    message = 'tag deleted'
+                    return jsonify({'code': code, 'message': message})
+                else:
+                    code = 404
+                    message = 'tag not found'
                     return jsonify({'code': code, 'message': message})
             except SQLAlchemyError as e:
                 db.session.rollback()

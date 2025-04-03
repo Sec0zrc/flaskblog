@@ -1,3 +1,4 @@
+import datetime
 import logging
 
 from flask import render_template, Blueprint, request, jsonify
@@ -52,7 +53,17 @@ def logout():
 @jwt_required()
 def dashboard():
     current_user = get_jwt_identity()
-    return render_template('dashboard.html')
+    user_ip = request.remote_addr
+    current_time = datetime.datetime.now()
+    return render_template('dashboard.html', user_ip=user_ip, current_time=current_time)
+
+
+@view_routes.route('/dashboard-posts.html')
+@view_routes.route('/dashboard-posts')
+@jwt_required()
+def dashboard_post():
+    return render_template('dashboard-posts.html')
+
 
 @view_routes.route('/posts.html')
 @view_routes.route('/posts')

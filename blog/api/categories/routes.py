@@ -1,7 +1,7 @@
 import logging
 from sqlalchemy.exc import SQLAlchemyError
 from blog.api.users.routes import is_admin
-from blog.models import Category
+from blog.models import Category, Post
 from flask import jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt
 from flask_restful import Resource, reqparse
@@ -81,6 +81,10 @@ class Categories(Resource):
             return jsonify({'code': code, 'message': message})
         else:
             try:
+                post = Post.query.filter_by(category_id=category_id)
+                for p in post:
+                    p.category_id = None
+                    db.session.commit()
                 category = Category.query.get(category_id)
                 if category:
                     db.session.delete(category)

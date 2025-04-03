@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>sign-up</title>
+  <title>Dashboard</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.1.1/dist/css/tabler.min.css" />
 
   <!--customize Google font-->
@@ -29,7 +29,7 @@
         </button>
         <h1 class="navbar-brand navbar-brand-autodark">
           <a href="#">
-            <img src=url(../images/avatar.jpg) width="110" height="32" alt="Dashboard" class="navbar-brand-image" />
+            <img width="110" height="32" alt="Dashboard" class="navbar-brand-image" />
           </a>
         </h1>
         <div class="collapse navbar-collapse" id="sidebar-menu">
@@ -40,7 +40,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="./dashboard.html?page='posts'">
+              <a class="nav-link" href="./dashboard-posts.html">
                 <span class="nav-link-title"> 文章管理 </span>
               </a>
             </li>
@@ -84,7 +84,7 @@
                 <div class="row row-0">
                   <div class="col-3">
                     <!-- Photo -->
-                    <img src="../images/avatar.jpg" class="w-auto h-100 object-cover card-img-start" alt="">
+                    <img src="{{ url_for('static', filename='images/avatar.jpg')}}" class="w-auto h-100 object-cover card-img-start" alt="">
                   </div>
                   <div class="col">
                     <div class="card-body">
@@ -100,7 +100,10 @@
             </div>
             <div class="col-3">
               <div class="card m-2">
-                <div class="card-body" style="height: 5rem;">时间及IP地址</div>
+                <div class="card-body" style="height: 6rem;">
+                  <p>当前IP地址:{{ user_ip }}</p>
+                  <p>当前时间:{{ current_time}}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -108,14 +111,14 @@
             <div class="col-2">
               <div class="card m-2">
                 <div class="card-body" style="height: 5rem;">
-                  文章总数
+                  文章总数: <p id="post_count"></p>
                 </div>
               </div>
             </div>
             <div class="col-2">
               <div class="card m-2">
                 <div class="card-body" style="height: 5rem;">
-                  草稿数
+                  草稿数: <p id="sketch_count"></p>
                 </div>
               </div>
             </div>
@@ -133,79 +136,24 @@
                 <div class="card-body" style="height: 30rem;">
                   <div class="input-group ms-auto">
                     <h4 class="m-2">分类</h4>
-                    <input type="text" class="form-control" placeholder="请输入新的分类" data-listener-added_7cb5886f="true">
+                    <input type="text" id="category_input" class="form-control" placeholder="请输入新的分类" data-listener-added_7cb5886f="true">
                     <button class="btn" type="button">添加分类</button>
                   </div>
-                  <div class="list-group list-group-flush overflow-auto" style="max-height: 25rem;">
-                    <span class="list-group-item d-flex align-items-center m-0">
-                      <p class="m-0">SQL基础教程</p>
-                      <button class="btn btn-danger btn-sm ms-auto m-0">删除</button>
-                    </span>
-                    <span class="list-group-item d-flex align-items-center m-0">
-                      <p class="m-0">SQL基础教程</p>
-                      <button class="btn btn-danger btn-sm ms-auto m-0">删除</button>
-                    </span>
-                    <span class="list-group-item d-flex align-items-center m-0">
-                      <p class="m-0">SQL基础教程</p>
-                      <button class="btn btn-danger btn-sm ms-auto m-0">删除</button>
-                    </span>
-                    <span class="list-group-item d-flex align-items-center m-0">
-                      <p class="m-0">SQL基础教程</p>
-                      <button class="btn btn-danger btn-sm ms-auto m-0">删除</button>
-                    </span>
-                    <span class="list-group-item d-flex align-items-center m-0">
-                      <p class="m-0">SQL基础教程</p>
-                      <button class="btn btn-danger btn-sm ms-auto m-0">删除</button>
-                    </span>
-                    <span class="list-group-item d-flex align-items-center m-0">
-                      <p class="m-0">SQL基础教程</p>
-                      <button class="btn btn-danger btn-sm ms-auto m-0">删除</button>
-                    </span>
-                    <span class="list-group-item d-flex align-items-center m-0">
-                      <p class="m-0">SQL基础教程</p>
-                      <button class="btn btn-danger btn-sm ms-auto m-0">删除</button>
-                    </span>
-                    <span class="list-group-item d-flex align-items-center m-0">
-                      <p class="m-0">SQL基础教程</p>
-                      <button class="btn btn-danger btn-sm ms-auto m-0">删除</button>
-                    </span>
-                    <span class="list-group-item d-flex align-items-center m-0">
-                      <p class="m-0">SQL基础教程</p>
-                      <button class="btn btn-danger btn-sm ms-auto m-0">删除</button>
-                    </span>
+                  <div class="list-group list-group-flush overflow-auto" style="max-height: 25rem;" id="category_list">
                   </div>
                 </div>
               </div>
             </div>
             <div class="col-4">
               <div class="card m-2">
-                <div class="card-body" style="height: 30rem;">
+                <div class="card-body" style="height: 30rem;" id="tag_list">
                   <div class="input-group ms-auto">
                     <h4 class="m-2">标签</h4>
-                    <input type="text" class="form-control" placeholder="请输入新的标签" data-listener-added_7cb5886f="true">
+                    <input type="text" id="tag_input" class="form-control" placeholder="请输入新的标签" data-listener-added_7cb5886f="true">
                     <button class="btn" type="button">添加标签</button>
                   </div>
                   <div class="tag-list m-3">
-                    <span class="tag badge bg-blue text-blue-fg">
-                      JavaScript
-                      <a href="#" class="btn-close"></a>
-                    </span>
-                    <span class="tag">
-                      JavaScript
-                      <a href="#" class="btn-close"></a>
-                    </span>
-                    <span class="tag">
-                      JavaScript
-                      <a href="#" class="btn-close"></a>
-                    </span>
-                    <span class="tag">
-                      JavaScript
-                      <a href="#" class="btn-close"></a>
-                    </span>
-                    <span class="tag">
-                      JavaScript
-                      <a href="#" class="btn-close"></a>
-                    </span>
+
                   </div>
                 </div>
               </div>
@@ -216,7 +164,13 @@
     </div>
   </div>
 
-  <script src="{{ url_for('static',filename='index.js')}}"></script>
+  <script src="{{ url_for('static',filename='dashboard.js')}}"></script>
+      <script>
+        document.addEventListener('DOMContentLoaded',
+            function () {
+                dashboard_load();
+            });
+    </script>
   <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.1.1/dist/js/tabler.min.js"></script>
 </body>
 

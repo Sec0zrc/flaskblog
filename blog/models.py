@@ -105,7 +105,7 @@ class Post(db.Model):
     content = db.Column(db.Text, nullable=False)
     create_at = db.Column(db.DateTime, nullable=False)
     status = db.Column(db.Integer, nullable=False, default=1)
-    category_id = db.Column(db.Integer, db.ForeignKey('categories.category_id'))
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.category_id'), nullable=False)
     tag_id = db.Column(db.Integer, db.ForeignKey('tags.tag_id'))
 
     def __init__(self, title, content, user_id, category_id, tag_id):

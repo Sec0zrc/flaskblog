@@ -322,3 +322,47 @@ class Posts(Resource):
             code = 403
             message = 'Permission denial.'
             return jsonify({'code': code, 'message': message})
+
+
+class PostCount(Resource):
+
+    @jwt_required()
+    def get(self):
+        try:
+            count = Post.query.count()
+            code = 200
+            message = '获取文章总数成功'
+            data = {'count': count}
+            return jsonify({'code': code, 'message': message, 'data': data})
+        except SQLAlchemyError as e:
+            code = 500
+            message = '获取文章总数失败'
+            logging.error(e)
+            return jsonify({'code': code, 'message': message, 'error': str(e)})
+        except Exception as e:
+            code = 500
+            message = '获取文章总数失败'
+            logging.error(e)
+            return jsonify({'code': code, 'message': message, 'error': str(e)})
+
+
+class SketchCount(Resource):
+
+    @jwt_required()
+    def get(self):
+        try:
+            count = Post.query.filter_by(status=0).count()
+            code = 200
+            message = '获取草稿总数成功'
+            data = {'count': count}
+            return jsonify({'code': code, 'message': message, 'data': data})
+        except SQLAlchemyError as e:
+            code = 500
+            message = '获取草稿总数失败'
+            logging.error(e)
+            return jsonify({'code': code, 'message': message, 'error': str(e)})
+        except Exception as e:
+            code = 500
+            message = '获取草稿总数失败'
+            logging.error(e)
+            return jsonify({'code': code, 'message': message, 'error': str(e)})

@@ -1,7 +1,7 @@
 import logging
 from flask import jsonify
 from flask_restful import Resource, reqparse
-from flask_jwt_extended import jwt_required, create_access_token, get_jwt
+from flask_jwt_extended import jwt_required, create_access_token, get_jwt, get_jwt_identity
 from sqlalchemy.exc import SQLAlchemyError
 
 from blog.models import User
@@ -9,8 +9,17 @@ from blog.extension import db
 
 
 def is_admin():
-    if get_jwt()['jti']['username'] == 'Admin':
-        return True
+    user_id = get_jwt_identity()
+    logging.info(f" user_Id: {user_id}")
+    user = User.query.get(user_id)
+
+    if user:
+        username = user.username
+        logging.info(f" username: {username}")
+        if username != 'Admin':
+            return False
+        else:
+            return True
     else:
         return False
 
