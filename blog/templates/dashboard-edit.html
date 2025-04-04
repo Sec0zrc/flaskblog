@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文章编辑</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.1.1/dist/css/tabler.min.css" />
+
+    <!--customize Google font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+    <!-- import Editor.md CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='editormd/css/editormd.min.css')}} " />
+    <style>
+        :root {
+            --tblr-font-sans-serif: "Inter";
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <!-- Sidebar -->
+        <aside class="navbar navbar-vertical navbar-expand-sm" data-bs-theme="dark">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <h1 class="navbar-brand navbar-brand-autodark">
+                    <a href="#">
+                        <img src=url({{ url_for('static', filename='images/avatar.jpg')}}) width="110" height="32" alt="Dashboard"
+                            class="navbar-brand-image" />
+                    </a>
+                </h1>
+                <div class="collapse navbar-collapse" id="sidebar-menu">
+                    <ul class="navbar-nav pt-lg-3">
+                        <li class="nav-item">
+                            <a href="./dashboard.html" class="nav-link">
+                                <span class="nav-link-title">后台首页</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./dashboard-posts.html">
+                                <span class="nav-link-title"> 文章管理 </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span class="nav-link-title"> 用户管理 </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span class="nav-link-title"> 评论管理 </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <span class="nav-link-tile">日志管理</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </aside>
+        <!-- 文章编辑页面 -->
+        <div class="page-wrapper" id="edit">
+            <div class="row row-deck row-cards align-items-center">
+                <div class="col-12">
+                    <div class="card m-4">
+                        <div class="card-body border-bottom py-3">
+                            <div class="d-flex">
+                                <div class="me-3">
+                                    <label class="form-label required">文章标题</label>
+                                    <input type="text" class="form-control" name="title" placeholder="title">
+                                  </div>
+                                  <div class="me-3">
+                                    <label class="form-label required">文章分类</label>
+                                    <input type="text" class="form-control" name="category" placeholder="category">
+                                  </div>
+                                  <div class="me-3">
+                                    <label class="form-label required">文章标签</label>
+                                    <input type="text" class="form-control" name="tag" placeholder="tag">
+                                  </div>
+                                <div class="me-3">
+                                    <label class="form-label">文章状态</label>
+                                    <select class="form-select" name="select">
+                                      <option value="0">Draft</option>
+                                      <option value="1">Publish</option>
+                                    </select>
+                                </div>
+                                <div class="me-3" name="button">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                </div>
+                <!-- eidtor.md container -->
+                <div class="col-12">
+                    <div class="card m-4 mt-0">
+                        <form method="POST" action="#">
+                            <div class="card-body border-bottom py-3">
+                                <div class="d-flex">
+                                    <div id="editor-md">
+                                        <textarea name="content" style="display:none;"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- editor.md js file import -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ url_for('static', filename='editormd/editormd.min.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.1.1/dist/js/tabler.min.js"></script>
+    <script src="{{ url_for('static', filename='dashboard.js')}}"></script>
+    <!-- init editor.md -->
+    <script>
+        $(function (){
+            editormd.urls = {
+                lib: "{{ url_for('static', filename='editormd/lib/')}}"
+            }
+            const editor = editormd("editor-md", {
+                width: "100%",
+                height: 640,
+                syncScrolling: "single",
+                path: "{{ url_for('static', filename='editormd/lib/')}}",
+                saveHTMLToTextarea: true,
+                emoji: true,
+                taskList: true,
+               tocm: true,
+            });
+            
+            // get the post from server
+            let post_id = window.location.href.split("?edit=")[1];
+            // get origin url
+            let baseURL = window.location.origin;
+            
+            
+            if(post_id == "new"){
+                document.querySelector("div[name='button']").innerHTML = '<a href="" class="m-4 btn btn-6 btn-outline-primary w-100" id="create"> create </a>';
+                const create_button = document.getElementById("create");
+                create_button.addEventListener("click", async () => {
+                    let title = document.querySelector("input[name='title']").value;
+                    let tag = document.querySelector("input[name='tag']").value;
+                    let category = document.querySelector("input[name='category']").value;
+                    let status = document.querySelector("select").value;
+                    if (title === "" || tag === "" || category === "") {
+                        alert("文章标题、分类、标签不能为空");
+                        return false;
+                    } else {
+                        // get the content of the editor
+                        let content = $("#editor-md textarea").val();
+                        // get baseURL
+                        let baseURL = window.location.origin;
+                        let data = {
+                            "title": title,
+                            "tag": tag,
+                            "category": category,
+                            "status": status,
+                            "content": content
+                        }
+                        let promise = await fetch(`${baseURL}/api/v1/posts`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body:JSON.stringify(data)
+                        })
+
+                        let result = await promise.json();
+                        if (result.code === 201) {
+                            alert("创建成功");
+                            window.location.href = `${baseURL}/dashboard`;
+                        } else {
+                            alert(result.message);
+                        }
+                    }
+                });
+            } else {
+                document.querySelector("div[name='button']").innerHTML = '<a href="" class="m-4 btn btn-6 btn-outline-primary w-100" id="submit"> submit </a>';
+                const submit_button = document.getElementById("submit");
+                // get the post from server
+                let target = `${baseURL}/api/v1/posts/${post_id}`;
+                let promise = get_data(target);
+                promise.then(data => {
+                    if (data.code === 200) {
+                        // set the value of the input
+                        console.log(data.data);
+                        document.querySelector("input[name='title']").value = data.data.title;
+                        document.querySelector("input[name='tag']").value = data.data.tag;
+                        document.querySelector("input[name='category']").value = data.data.category;
+                        document.querySelector("select").value = data.data.status;
+
+                        $("#editor-md textarea").val(data.data.content);
+                    } else {
+                        alert("获取文章失败");
+                        alert(data.message);
+                        window.location.href = "/dashboard";
+                    }
+                });
+
+                // add listener to button
+                submit_button.addEventListener("click", async (editor) => {
+                // check if the content is empty
+                const title = document.querySelector("input[name='title']").value;
+                const tag = document.querySelector("input[name='tag']").value;
+                const category = document.querySelector("input[name='category']").value;
+                const status = document.querySelector("select").value;
+                
+                if (title === "" || tag === "" || category === "") {
+                    alert("文章标题、分类、标签不能为空");
+                } else {
+                    // get the content of the editor
+                    let content =  $("#editor-md textarea").val();
+                    console.log(content);
+                    // get post_id
+                    let post_id = window.location.href.split("?edit=")[1];
+                    // get baseURL
+                    let baseURL = window.location.origin;
+                    let data = {
+                        "title": title,
+                        "tag": tag,
+                        "category": category,
+                        "status": status,
+                        "content": content
+                    };
+                    console.log(data);
+                    let promise = await fetch(`${baseURL}/api/v1/posts/${post_id}`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body:JSON.stringify(data)
+                    })
+                    let response = await promise.json();
+                    
+                    if (response.code === 200) {
+                        alert("更新成功");
+                        window.location.href = `${baseURL}/dashboard`;
+                    } else {
+                        alert(response.message + response.code);
+
+                    }
+                }
+            });
+            }
+        });
+
+    </script> 
+
+
+</body>
+</html>

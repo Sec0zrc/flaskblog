@@ -285,7 +285,7 @@ async function post_load(page) {
             const post_url = `target/${post.post_id}`
             const tr = document.createElement('tr');
             tr.innerHTML = `<td><span class="text-secondary">${post.post_id}</span></td>
-                            <td><a href="invoice.html" class="text-reset" tabindex="-1">${post.title}</a></td>
+                            <td><a href="./posts.html?post_id=${post.post_id}" class="text-reset" tabindex="-1">${post.title}</a></td>
                             <td>${post.category_id}</td>
                             <td>${post.tag_id}</td>`
 
@@ -299,7 +299,7 @@ async function post_load(page) {
             tr.innerHTML += `<td> ${post.create_at}</td>
                             <td class="text-end">
                             <a href="./dashboard-edit.html?edit=${post.post_id}" class="btn" role="button">编辑</a>
-                            <a href="#" class="btn" role="button" onclick="delete_posts(${post.post_id})">删除</a>
+                            <a href="#" id="${post.post_id}" class="btn" role="button" onclick="delete_posts(this)">删除</a>
                             </td>`
 
             container.appendChild(tr);
@@ -308,3 +308,66 @@ async function post_load(page) {
     });
 
 }
+
+async function delete_posts(element){
+    let url = window.location.origin;
+    let post_id = element.id;
+    let tartget = `${url}/api/v1/posts/${post_id}`;
+    let promise = await fetch(tartget, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    let result = await promise.json();
+    if( result.code === 200) {
+        element.parentNode.parentNode.remove();
+        console.log('delete success');
+    } else {
+        console.log(`delete error ${result.error}`);
+    }
+
+}
+
+async function create_post(editor){
+    // check if the content is empty
+    const title = document.querySelector("input[name='title']").value;
+    const tag = document.querySelector("input[name='tag']").value;
+    const category = document.querySelector("input[name='category']").value;
+    const status = document.querySelector("select[name='status']").value;
+    console.log(title, tag, category, status);
+    if (title === "" || tag === "" || category === "") {
+        alert("文章标题、分类、标签不能为空");
+        return false;
+    } else {
+        // get the content of the editor
+        let content = $("#editor-md textarea").val();
+        // get post_id
+        let post_id = window.location.href.split("?edit=")[1];
+        // get baseURL
+        let baseURL = window.location.origin;
+        let data = {
+            "title": title,
+            "tag": tag,
+            "category": category,
+            "status": status,
+            "content": content
+        };
+        console.log(data);
+        let promise = await fetch(`${baseURL}/api/v1/posts/${post_id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body:JSON.stringify(data)
+        })
+        let response = await promise.json();
+        if (response.code === 200) {
+            alert("更新成功");
+            window.location.href = `${baseURL}/dashboard`;
+        } else {
+            alert(response.message);
+        }
+    }
+}
+

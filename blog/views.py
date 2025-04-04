@@ -69,3 +69,9 @@ def dashboard_post():
 @view_routes.route('/posts')
 def posts():
     return render_template('posts.html')
+
+@view_routes.route('/dashboard-edit.html')
+@view_routes.route('/dashboard-edit')
+@jwt_required()
+def dashboard_edit():
+    return render_template('dashboard-edit.html')

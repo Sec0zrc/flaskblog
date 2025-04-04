@@ -12,6 +12,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 
+    <!-- import marked.js -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.6.0/build/styles/default.min.css">
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.6.0/build/highlight.min.js"></script>
+
     <style>
         :root {
             --tblr-font-sans-serif: "Inter";
@@ -130,12 +135,20 @@
                 console.log(data);
                 const post_container = document.querySelector('.container-sm.w-50');
                 if (data.code === 200) {
+                    // set code highlight
+                    marked.setOptions({
+                        highlight: function(code, language) {
+                            return hljs.highlightAuto(code).value;
+                        }
+                    });
+                    // parse the markdown to html
+                    post_content = marked.parse(data.data.content);
                     const post_title = document.createElement('h1');
                     post_title.innerHTML = data.data.title;
                     post_container.appendChild(post_title)
-                    const post_content = document.createElement('p');
-                    post_content.innerHTML = data.data.content
-                    post_container.appendChild(post_content)
+                    const post_content_div = document.createElement('div');
+                    post_content_div.innerHTML = post_content;
+                    post_container.appendChild(post_content_div);
                 }else {
                     console.log(`error : ${data.error}`)
                 }

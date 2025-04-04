@@ -29,7 +29,7 @@ def initdb(flag=0):
 def forge():
     """Generate fake data"""
     # 清空数据库 禁用mysql的外键检查
-    # db.session.execute(text('SET FOREIGN_KEY_CHECKS = 0'))
+    db.session.execute(text('SET FOREIGN_KEY_CHECKS = 0'))
     #db.session.execute(text('PRAGMA foreign_keys = 0'))
     db.drop_all()
     db.create_all()

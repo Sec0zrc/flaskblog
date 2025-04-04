@@ -72,8 +72,9 @@ class Category(db.Model):
     def __init__(self, category_name):
         self.category_name = category_name
 
-    def get_id(self, category_name):
-        category = Category.query.filter_by(category_name=category_name).first()
+    @staticmethod
+    def get_id(name):
+        category = Category.query.filter_by(category_name=name).first()
         if category:
             return category.category_id
         else:
@@ -88,8 +89,9 @@ class Tag(db.Model):
     def __init__(self, tag_name):
         self.tag_name = tag_name
 
-    def get_id(self, tag_name):
-        tag = Tag.query.filter_by(tag_name=tag_name).first()
+    @staticmethod
+    def get_id(name):
+        tag = Tag.query.filter_by(tag_name=name).first()
         if tag:
             return tag.tag_id
         else:
@@ -117,6 +119,9 @@ class Post(db.Model):
 
     def set_create_time(self, create_time):
         self.create_at = create_time
+
+    def set_title(self, title):
+        self.title = title
 
     def set_status(self, status):
         self.status = status
